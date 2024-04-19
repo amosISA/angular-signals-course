@@ -1,6 +1,8 @@
-import { AfterContentInit, Component, ContentChild, ElementRef, EventEmitter, Input, OnInit, Output, contentChild, contentChildren, model } from '@angular/core';
+import { Component, EventEmitter, Output, effect, model, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Alquileres } from '../app.component';
+import { outputFromObservable, outputToObservable } from '@angular/core/rxjs-interop';
+import { interval, of } from 'rxjs';
 
 @Component({
   selector: 'app-alquileres',
@@ -11,25 +13,26 @@ import { Alquileres } from '../app.component';
     class: 'flex mt-2 mb-2'
   }
 })
-export class AlquileresComponent implements OnInit, AfterContentInit {
-  /* @Input() alquiler = Alquileres.libreria;
-
-  @Output() alquilerChange = new EventEmitter(); */
-
+export class AlquileresComponent {
   alquiler = model<Alquileres | string>(Alquileres.libreria);
+  titleColor = output<string>();
+  debugTitleColor$ = outputToObservable(this.titleColor);
 
-  h1 = contentChildren('h1', { descendants: false });
-  @ContentChild('h2', { descendants: true }) h2!: ElementRef;
+  itemsList$ = of([1, 2, 3, 4]);
+  itemsToOutput = outputFromObservable(this.itemsList$);
 
   constructor() {
-    console.log(this.h1()); // undefined
-  }
+    effect(() => {
+      const color = this.alquiler() === Alquileres.libreria ? 'black' : 'red';
+      this.titleColor.emit(color);
+    });
 
-  ngAfterContentInit(): void {
-    console.log(this.h2);
-  }
+    // 2 nuevas funcionalidades
+    // 1. outputToObservable
+    this.debugTitleColor$.subscribe({
+      next: () => {}
+    });
 
-  ngOnInit(): void {
-    console.log(this.h1());
+    // 2. outputFromObservable
   }
 }

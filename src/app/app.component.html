@@ -1,21 +1,17 @@
 <div #div class="flex items-center justify-between">
-  <h1 class="text-5xl font-bold">Queries as Signals 17.2</h1>
-  <h3 class="text-2xl">{{ appTitle() }}</h3>
+  <h1
+    [ngStyle]="{ 'color': titleColor() }"
+    class="text-5xl font-bold">Angular new output() API 17.3</h1>
   <img ngSrc="/assets/logo.png" width="100" height="100" priority />
 </div>
 
-<app-alquileres [(alquiler)]="alquileres">
-  <h1 #h1>Hola View Queries</h1>
-  <h1 #h2>Hola View Queries 2</h1>
-</app-alquileres>
+<app-alquileres
+  [(alquiler)]="alquileres"
+  (titleColor)="titleColor.set($event)"
+  (itemsToOutput)="[]" />
 
 @if (alquileres() === alquileresEnum().libreria) {
   <app-libreria />
 } @else if (alquileres() === alquileresEnum().peliculas) {
   <app-cine />
 }
-
-<div #tmpRef>Testing queries</div>
-<ng-template #tpl />
-
-<ng-container #vc></ng-container>
