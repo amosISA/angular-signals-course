@@ -1,14 +1,13 @@
 <div #div class="flex items-center justify-between">
   <h1
     [ngStyle]="{ 'color': titleColor() }"
-    class="text-5xl font-bold">Angular new output() API 17.3</h1>
+    class="text-5xl font-bold">Deferrable Views Angular 17</h1>
   <img ngSrc="/assets/logo.png" width="100" height="100" priority />
 </div>
 
 <app-alquileres
   [(alquiler)]="alquileres"
-  (titleColor)="titleColor.set($event)"
-  (itemsToOutput)="[]" />
+  (titleColor)="titleColor.set($event)" />
 
 @if (alquileres() === alquileresEnum().libreria) {
   <app-libreria />
